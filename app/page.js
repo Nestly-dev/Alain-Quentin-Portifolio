@@ -1,11 +1,11 @@
-// app/page.js
+// app/page.js - DEBUG VERSION
 'use client'
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
 
-// Dynamic imports for better performance
+// Dynamic imports
 const Navbar = dynamic(() => import('../components/Navbar'), { ssr: false })
 const Hero = dynamic(() => import('../components/Hero'), { ssr: false })
 const Showreel = dynamic(() => import('../components/Showreel'), { ssr: false })
@@ -16,7 +16,6 @@ const Services = dynamic(() => import('../components/Services'), { ssr: false })
 const Contact = dynamic(() => import('../components/Contact'), { ssr: false })
 const Footer = dynamic(() => import('../components/Footer'), { ssr: false })
 const Loader = dynamic(() => import('../components/Loader'), { ssr: false })
-const SmoothScrollProvider = dynamic(() => import('../components/SmoothScrollProvider'), { ssr: false })
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true)
@@ -67,35 +66,39 @@ export default function HomePage() {
   }
 
   return (
-    <SmoothScrollProvider>
-      <main className="portfolio-main">
-        {/* Animated Background */}
-        <div className="animated-background" />
-        
-        <AnimatePresence mode="wait">
-          {loading ? (
-            <Loader key="loader" />
-          ) : (
-            <motion.div
-              key="main"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              className="main-content"
-            >
-              <Navbar />
-              <Hero />
-              <Showreel />
-              <Portfolio />
-              <Process />
-              <About />
-              <Services />
-              <Contact />
-              <Footer />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
-    </SmoothScrollProvider>
+    <main className="portfolio-main" style={{ minHeight: '100vh', position: 'relative' }}>
+      {/* Animated Background */}
+      <div className="animated-background" style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05), transparent 50%)',
+        pointerEvents: 'none',
+        zIndex: -1
+      }} />
+      
+      <AnimatePresence mode="wait">
+        {loading ? (
+          <Loader key="loader" />
+        ) : (
+          <motion.div
+            key="main"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="main-content"
+          >
+            <Navbar />
+            <Hero />
+            <Showreel />
+            <Portfolio />
+            <Process />
+            <About />
+            <Services />
+            <Contact />
+            <Footer />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </main>
   )
 }
