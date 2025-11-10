@@ -86,7 +86,19 @@ export default function Showreel() {
       gradient: "linear-gradient(135deg, #AA96DA, #FCBAD3)",
       duration: "3 min",
       featured: false
-    }
+    },
+        {
+      id: 7,
+      title: "Life Exploration Reflection",
+      category: "Travel",
+      videoId: "yYowFOea3jM",
+      thumbnail: "https://img.youtube.com/vi/yYowFOea3jM/maxresdefault.jpg",
+      description: "Immersive city experiences capturing the pulse of modern African metropolises",
+      color: "#A8D8EA",
+      gradient: "linear-gradient(135deg, #A8D8EA, #C2E9FB)",
+      duration: "3-5 min",
+      featured: false
+    },
   ]
 
   const featuredVideos = videos.filter(v => v.featured)

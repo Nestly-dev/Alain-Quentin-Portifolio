@@ -99,8 +99,8 @@ export default function Contact() {
   }
 
   const socialLinks = [
-    { name: 'Instagram', icon: '📷', url: 'https://www.instagram.com/gentil_quentin/', color: '#E4405F' },
-    { name: 'YouTube', icon: '🎥', url: 'https://www.youtube.com/@gentilquentin', color: '#1AB7EA' },
+    { name: 'Instagram', icon: '📷', url: 'https://www.instagram.com/gentil_quentin/', color: '#fc00efff' },
+    { name: 'YouTube', icon: '🎥', url: 'https://www.youtube.com/@gentilquentin', color: '#ea1a1aff' },
     { name: 'LinkedIn', icon: '💼', url: 'https://www.linkedin.com/in/alain-quentin-rurangirwa-ineza-b057002b7/', color: '#0077B5' }
   ]
 
@@ -352,10 +352,10 @@ export default function Contact() {
                 isFocused={focusedField === 'budget'}
                 options={[
                   { value: "", label: "Select budget" },
-                  { value: "5k-10k", label: "$5k - $10k" },
-                  { value: "10k-25k", label: "$10k - $25k" },
-                  { value: "25k-50k", label: "$25k - $50k" },
-                  { value: "50k+", label: "$50k+" }
+                  { value: "200-500", label: "$200 - $500" },
+                  { value: "500-1000", label: "$500 - $1000" },
+                  { value: "1000-2000", label: "$1000 - $2000" },
+                  { value: "2000+", label: "$2000+" }
                 ]}
                 icon="💰"
               />

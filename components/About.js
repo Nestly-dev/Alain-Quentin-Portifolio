@@ -100,7 +100,7 @@ export default function About() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            With over 4 years of experience in video editing, I've had the privilege of working with some of the world's most recognized brands and talented filmmakers. My passion lies in transforming raw footage into compelling narratives that resonate with audiences.
+            With over 3 years of experience in video editing, I've had the privilege of working with some of the world's most recognized brands and talented filmmakers. My passion lies in transforming raw footage into compelling narratives that resonate with audiences.
           </motion.p>
           
           <motion.p
@@ -108,7 +108,7 @@ export default function About() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.5, duration: 0.6 }}
           >
-            I specialize in commercial advertising, documentary filmmaking, and music videos, bringing a unique blend of technical expertise and creative vision to every project. My work has been featured in international film festivals and has garnered millions of views across digital platforms.
+            I specialize in commercial advertising, documentary filmmaking, highlights and impact stories, bringing a unique blend of technical expertise and creative vision to every project. My work has been featured in international film festivals and has garnered millions of views across digital platforms.
           </motion.p>
 
           <motion.div
