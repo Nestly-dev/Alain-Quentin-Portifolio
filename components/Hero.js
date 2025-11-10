@@ -5,6 +5,7 @@ export default function Hero() {
   const sectionRef = useRef(null)
   const [activeWord, setActiveWord] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   
@@ -21,25 +22,41 @@ export default function Hero() {
   const contentY = useTransform(scrollYProgress, [0, 1], [0, 400])
   const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
   const videoScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.2])
+  
+  // Pre-calculate transforms for orbs (always called, even if not rendered)
+  const orb1X = useTransform(smoothMouseX, x => x)
+  const orb1Y = useTransform(smoothMouseY, y => y)
+  const orb2X = useTransform(smoothMouseX, x => -x * 0.7)
+  const orb2Y = useTransform(smoothMouseY, y => -y * 0.7)
 
   useEffect(() => {
     setIsLoaded(true)
     
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
     const handleMouseMove = (e) => {
-      const { clientX, clientY } = e
-      const { innerWidth, innerHeight } = window
-      mouseX.set((clientX / innerWidth - 0.5) * 30)
-      mouseY.set((clientY / innerHeight - 0.5) * 30)
+      if (window.innerWidth > 768) { // Only on desktop
+        const { clientX, clientY } = e
+        const { innerWidth, innerHeight } = window
+        mouseX.set((clientX / innerWidth - 0.5) * 30)
+        mouseY.set((clientY / innerHeight - 0.5) * 30)
+      }
     }
 
     window.addEventListener('mousemove', handleMouseMove)
     
     const interval = setInterval(() => {
-      setActiveWord(prev => (prev + 1) % 3)
+      setActiveWord(prev => (prev + 1) % 4)
     }, 3000)
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('resize', checkMobile)
       clearInterval(interval)
     }
   }, [])
@@ -66,51 +83,59 @@ export default function Hero() {
         
         <div className="hero-overlay" />
         
-        {/* Apple-Style Gradient Orbs */}
-        <motion.div
-          style={{
-            position: 'absolute',
-            top: '20%',
-            left: '15%',
-            width: '500px',
-            height: '500px',
-            background: 'radial-gradient(circle, rgba(0, 113, 227, 0.25) 0%, transparent 70%)',
-            borderRadius: '50%',
-            filter: 'blur(80px)',
-            pointerEvents: 'none'
-          }}
-          animate={{
-            x: smoothMouseX,
-            y: smoothMouseY,
-            scale: [1, 1.1, 1]
-          }}
-          transition={{ scale: { duration: 4, repeat: Infinity, ease: "easeInOut" } }}
-        />
-        <motion.div
-          style={{
-            position: 'absolute',
-            bottom: '15%',
-            right: '15%',
-            width: '600px',
-            height: '600px',
-            background: 'radial-gradient(circle, rgba(175, 82, 222, 0.2) 0%, transparent 70%)',
-            borderRadius: '50%',
-            filter: 'blur(90px)',
-            pointerEvents: 'none'
-          }}
-          animate={{
-            x: useTransform(smoothMouseX, x => -x * 0.7),
-            y: useTransform(smoothMouseY, y => -y * 0.7),
-            scale: [1, 1.15, 1]
-          }}
-          transition={{ scale: { duration: 5, repeat: Infinity, ease: "easeInOut" } }}
-        />
+        {/* Apple-Style Gradient Orbs - Hidden on mobile for performance */}
+        {!isMobile && (
+          <>
+            <motion.div
+              style={{
+                position: 'absolute',
+                top: '20%',
+                left: '15%',
+                width: '500px',
+                height: '500px',
+                background: 'radial-gradient(circle, rgba(0, 113, 227, 0.25) 0%, transparent 70%)',
+                borderRadius: '50%',
+                filter: 'blur(80px)',
+                pointerEvents: 'none',
+                x: orb1X,
+                y: orb1Y
+              }}
+              animate={{
+                scale: [1, 1.1, 1]
+              }}
+              transition={{ scale: { duration: 4, repeat: Infinity, ease: "easeInOut" } }}
+            />
+            <motion.div
+              style={{
+                position: 'absolute',
+                bottom: '15%',
+                right: '15%',
+                width: '600px',
+                height: '600px',
+                background: 'radial-gradient(circle, rgba(175, 82, 222, 0.2) 0%, transparent 70%)',
+                borderRadius: '50%',
+                filter: 'blur(90px)',
+                pointerEvents: 'none',
+                x: orb2X,
+                y: orb2Y
+              }}
+              animate={{
+                scale: [1, 1.15, 1]
+              }}
+              transition={{ scale: { duration: 5, repeat: Infinity, ease: "easeInOut" } }}
+            />
+          </>
+        )}
       </motion.div>
 
       {/* Main Content */}
       <motion.div 
         className="hero-content"
-        style={{ y: contentY, opacity: contentOpacity }}
+        style={{ 
+          y: contentY, 
+          opacity: contentOpacity,
+          padding: isMobile ? '0 1.5rem' : '0 2rem'
+        }}
       >
         {/* Apple-Style Overline */}
         <motion.div
@@ -118,56 +143,62 @@ export default function Hero() {
           animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            fontSize: '0.85rem',
+            fontSize: isMobile ? '0.7rem' : '0.85rem',
             fontWeight: '600',
-            letterSpacing: '0.15em',
+            letterSpacing: isMobile ? '0.1em' : '0.15em',
             color: '#9CA3AF',
             textTransform: 'uppercase',
-            marginBottom: '2rem'
+            marginBottom: isMobile ? '1.5rem' : '2rem'
           }}
         >
           Video Editor
         </motion.div>
 
         {/* Massive Apple-Style Title */}
-        <div style={{ perspective: 1000, marginBottom: '2rem' }}>
-          <motion.h1 className="hero-title">
+        <div style={{ perspective: 1000, marginBottom: isMobile ? '1.5rem' : '2rem' }}>
+          <motion.h1 
+            className="hero-title"
+            style={{
+              fontSize: isMobile ? 'clamp(2.5rem, 12vw, 4rem)' : 'clamp(4rem, 10vw, 8rem)'
+            }}
+          >
             {['ALAIN', 'QUENTIN'].map((word, wordIndex) => (
               <motion.span
                 key={wordIndex}
                 className="hero-title-line"
-                initial={{ opacity: 0, y: 120, rotateX: 30 }}
+                initial={{ opacity: 0, y: isMobile ? 60 : 120, rotateX: isMobile ? 15 : 30 }}
                 animate={{ opacity: 1, y: 0, rotateX: 0 }}
                 transition={{
-                  duration: 1.4,
+                  duration: isMobile ? 1 : 1.4,
                   delay: 0.5 + wordIndex * 0.15,
                   ease: [0.16, 1, 0.3, 1]
                 }}
                 style={{
-                  transformStyle: 'preserve-3d'
+                  transformStyle: 'preserve-3d',
+                  display: 'block'
                 }}
               >
                 {word.split('').map((letter, i) => (
                   <motion.span
                     key={i}
-                    initial={{ opacity: 0, y: 50 }}
+                    initial={{ opacity: 0, y: isMobile ? 30 : 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
                       duration: 0.8,
                       delay: 0.7 + wordIndex * 0.15 + i * 0.04,
                       ease: [0.16, 1, 0.3, 1]
                     }}
-                    whileHover={{
+                    whileHover={!isMobile ? {
                       y: -12,
                       scale: 1.1,
                       color: '#0071E3',
                       textShadow: '0 20px 40px rgba(0, 113, 227, 0.5)',
                       transition: { duration: 0.2, ease: 'easeOut' }
-                    }}
+                    } : {}}
                     style={{
                       display: 'inline-block',
                       transformStyle: 'preserve-3d',
-                      cursor: 'default'
+                      cursor: isMobile ? 'default' : 'default'
                     }}
                   >
                     {letter}
@@ -187,14 +218,14 @@ export default function Hero() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '0.75rem',
-            marginBottom: '3rem',
+            gap: isMobile ? '0.5rem' : '0.75rem',
+            marginBottom: isMobile ? '2rem' : '3rem',
             flexWrap: 'wrap',
-            minHeight: '3rem'
+            minHeight: isMobile ? '2.5rem' : '3rem'
           }}
         >
           <span style={{
-            fontSize: 'clamp(1.2rem, 3vw, 2rem)',
+            fontSize: isMobile ? 'clamp(1rem, 4vw, 1.2rem)' : 'clamp(1.2rem, 3vw, 2rem)',
             fontWeight: '500',
             color: '#D1D5DB',
             letterSpacing: '0.02em'
@@ -203,8 +234,8 @@ export default function Hero() {
           </span>
           <div style={{
             position: 'relative',
-            width: 'clamp(140px, 15vw, 200px)',
-            height: '3rem',
+            width: isMobile ? 'clamp(120px, 30vw, 160px)' : 'clamp(140px, 15vw, 200px)',
+            height: isMobile ? '2.5rem' : '3rem',
             overflow: 'hidden'
           }}>
             <AnimatePresence mode="wait">
@@ -214,7 +245,7 @@ export default function Hero() {
                   position: 'absolute',
                   left: 0,
                   top: 0,
-                  fontSize: 'clamp(1.2rem, 3vw, 2rem)',
+                  fontSize: isMobile ? 'clamp(1rem, 4vw, 1.2rem)' : 'clamp(1.2rem, 3vw, 2rem)',
                   fontWeight: '600',
                   background: 'linear-gradient(135deg, #0071E3, #AF52DE, #FF2D55)',
                   WebkitBackgroundClip: 'text',
@@ -236,7 +267,7 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Apple-Style CTA Buttons */}
+        {/* Apple-Style CTA Buttons - Stacked on mobile */}
         <motion.div
           className="hero-cta-container"
           initial={{ opacity: 0, y: 30 }}
@@ -244,23 +275,38 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}
           style={{
             display: 'flex',
-            gap: '1.5rem',
+            gap: isMobile ? '1rem' : '1.5rem',
             justifyContent: 'center',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
+            flexDirection: isMobile ? 'column' : 'row',
+            alignItems: isMobile ? 'stretch' : 'center',
+            maxWidth: isMobile ? '100%' : 'none'
           }}
         >
           <motion.a
             href="#showreel"
             className="hero-cta"
-            whileHover={{ 
-              scale: 1.05
-            }}
+            whileHover={!isMobile ? { scale: 1.05 } : {}}
             whileTap={{ scale: 0.97 }}
             style={{
               background: '#0071E3',
               position: 'relative',
               overflow: 'hidden',
-              boxShadow: '0 20px 40px rgba(0, 113, 227, 0.3)'
+              boxShadow: '0 20px 40px rgba(0, 113, 227, 0.3)',
+              padding: isMobile ? '1rem 2rem' : '1.2rem 2.5rem',
+              fontSize: isMobile ? '1rem' : '1.2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.75rem',
+              color: '#fff',
+              textDecoration: 'none',
+              borderRadius: '60px',
+              fontWeight: '600',
+              letterSpacing: '0.02em',
+              border: 'none',
+              width: isMobile ? '100%' : 'auto',
+              touchAction: 'manipulation'
             }}
           >
             <span style={{ position: 'relative', zIndex: 2 }}>View My Work</span>
@@ -272,112 +318,117 @@ export default function Hero() {
               →
             </motion.span>
             
-            {/* Shimmer Effect */}
-            <motion.div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: '-100%',
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-                zIndex: 1
-              }}
-              animate={{
-                left: ['−100%', '200%']
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                repeatDelay: 3,
-                ease: 'easeInOut'
-              }}
-            />
+            {/* Shimmer Effect - Reduced on mobile */}
+            {!isMobile && (
+              <motion.div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: '-100%',
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                  zIndex: 1
+                }}
+                animate={{
+                  left: ['−100%', '200%']
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatDelay: 3,
+                  ease: 'easeInOut'
+                }}
+              />
+            )}
           </motion.a>
 
           <motion.a
             href="#contact"
-            whileHover={{ 
+            whileHover={!isMobile ? { 
               scale: 1.05,
               borderColor: '#0071E3',
               color: '#0071E3'
-            }}
+            } : {}}
             whileTap={{ scale: 0.97 }}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '0.75rem',
               background: 'rgba(255, 255, 255, 0.08)',
               backdropFilter: 'blur(20px)',
               color: '#fff',
-              padding: '1.2rem 2.5rem',
+              padding: isMobile ? '1rem 2rem' : '1.2rem 2.5rem',
               border: '2px solid rgba(255,255,255,0.2)',
               borderRadius: '60px',
-              fontSize: '1.2rem',
+              fontSize: isMobile ? '1rem' : '1.2rem',
               fontWeight: '600',
               textDecoration: 'none',
               cursor: 'pointer',
               letterSpacing: '0.02em',
-              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
+              transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              width: isMobile ? '100%' : 'auto',
+              touchAction: 'manipulation'
             }}
           >
             <span>Get In Touch</span>
           </motion.a>
         </motion.div>
-
-
       </motion.div>
 
-      {/* Apple-Style Scroll Indicator */}
-      <motion.div
-        className="scroll-indicator"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isLoaded ? 1 : 0 }}
-        transition={{ duration: 1, delay: 2.8 }}
-        style={{ opacity: contentOpacity }}
-      >
+      {/* Apple-Style Scroll Indicator - Hidden on very small mobile */}
+      {!isMobile && (
         <motion.div
-          style={{
-            width: '24px',
-            height: '40px',
-            border: '2px solid rgba(255, 255, 255, 0.3)',
-            borderRadius: '20px',
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'center',
-            padding: '8px',
-            marginBottom: '0.5rem'
-          }}
-          animate={{ opacity: [0.3, 1, 0.3] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="scroll-indicator"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isLoaded ? 1 : 0 }}
+          transition={{ duration: 1, delay: 2.8 }}
+          style={{ opacity: contentOpacity }}
         >
           <motion.div
             style={{
-              width: '3px',
-              height: '8px',
-              background: '#fff',
-              borderRadius: '2px'
+              width: '24px',
+              height: '40px',
+              border: '2px solid rgba(255, 255, 255, 0.3)',
+              borderRadius: '20px',
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+              padding: '8px',
+              marginBottom: '0.5rem'
             }}
-            animate={{ y: [0, 12, 0] }}
+            animate={{ opacity: [0.3, 1, 0.3] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          />
+          >
+            <motion.div
+              style={{
+                width: '3px',
+                height: '8px',
+                background: '#fff',
+                borderRadius: '2px'
+              }}
+              animate={{ y: [0, 12, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </motion.div>
+          <motion.span
+            style={{
+              fontSize: '0.75rem',
+              color: '#9CA3AF',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase'
+            }}
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            Scroll to explore
+          </motion.span>
         </motion.div>
-        <motion.span
-          style={{
-            fontSize: '0.75rem',
-            color: '#9CA3AF',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase'
-          }}
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          Scroll to explore
-        </motion.span>
-      </motion.div>
+      )}
 
-      {/* Subtle Floating Particles */}
-      {[...Array(12)].map((_, i) => (
+      {/* Subtle Floating Particles - Reduced count on mobile */}
+      {[...Array(isMobile ? 6 : 12)].map((_, i) => (
         <motion.div
           key={i}
           style={{

@@ -1,4 +1,4 @@
-// components/Portfolio.js - APPLE-INSPIRED DESIGN
+// components/Portfolio.js - MOBILE OPTIMIZED WITH SEE MORE FEATURE
 "use client";
 
 import {
@@ -10,9 +10,6 @@ import {
 } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useState, useEffect } from "react";
-import emailjs from '@emailjs/browser'
-
-emailjs.init("YOUR_PUBLIC_KEY")
 
 export default function Portfolio() {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
@@ -20,6 +17,20 @@ export default function Portfolio() {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+
+  // CUSTOMIZE THIS: Choose which 6 videos to show initially by their IDs
+  const initialVideoIds = [1, 2, 3, 4, 16, 10]; // Change these IDs to show different videos
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const filters = [
     { id: "all", label: "All Work", icon: "◉" },
@@ -122,7 +133,7 @@ export default function Portfolio() {
       duration: "1 hr",
       year: "2025",
     },
-        {
+    {
       id: 8,
       title: "Cinematic Storytelling",
       category: "storytelling",
@@ -150,14 +161,16 @@ export default function Portfolio() {
       duration: "4 min",
       year: "2024",
     },
-      {
+    {
       id: 16,
       title: "Purpose-Driven Leadership",
       category: "interviews",
       videoId: "qfUnJw7ksW0",
       thumbnail: "https://img.youtube.com/vi/qfUnJw7ksW0/maxresdefault.jpg",
-      description: "Authentic conversations about building organizations that matter",
-      story: "The most impactful leaders don't just build companies—they create movements that inspire and empower others.",
+      description:
+        "Authentic conversations about building organizations that matter",
+      story:
+        "The most impactful leaders don't just build companies—they create movements that inspire and empower others.",
       color: "#FF6B6B",
       gradient: "linear-gradient(135deg, #FF6B6B, #FF8E8E)",
       tags: ["Documentary", "Interview", "Purpose"],
@@ -178,7 +191,6 @@ export default function Portfolio() {
       duration: "2-10 min",
       year: "2023",
     },
-    // NEW COURSES
     {
       id: 11,
       title: "Cults",
@@ -199,7 +211,8 @@ export default function Portfolio() {
       category: "courses",
       videoId: "UTfH5A4y3xs",
       thumbnail: "https://img.youtube.com/vi/UTfH5A4y3xs/maxresdefault.jpg",
-      description: "Learn about your own origin and what people around the world believes about it",
+      description:
+        "Learn about your own origin and what people around the world believes about it",
       story: "Openning our eyes",
       color: "#FFD93D",
       gradient: "linear-gradient(135deg, #FFD93D, #6BCF7F)",
@@ -221,30 +234,32 @@ export default function Portfolio() {
       duration: "5 min",
       year: "2025",
     },
-    // NEW INTERVIEWS
     {
       id: 15,
       title: "The Innovators' Mindset",
       category: "interviews",
       videoId: "WMOgmg9hsLw",
       thumbnail: "https://img.youtube.com/vi/WMOgmg9hsLw/maxresdefault.jpg",
-      description: "Exploring the journey from idea to impact with groundbreaking entrepreneurs",
-      story: "Innovation isn't just about technology—it's about reimagining what's possible and having the courage to pursue it.",
+      description:
+        "Exploring the journey from idea to impact with groundbreaking entrepreneurs",
+      story:
+        "Innovation isn't just about technology—it's about reimagining what's possible and having the courage to pursue it.",
       color: "#FF6B6B",
       gradient: "linear-gradient(135deg, #FF6B6B, #FF8E8E)",
       tags: ["Documentary", "Interview", "Innovation"],
       duration: "2-10 min",
       year: "2025",
     },
-    // NEW IMPACT STORIES
     {
       id: 17,
       title: "Voices of Change",
       category: "impact stories",
       videoId: "sHQjujWaaBc",
       thumbnail: "https://img.youtube.com/vi/sHQjujWaaBc/maxresdefault.jpg",
-      description: "Powerful narratives of communities transforming their own futures",
-      story: "Change doesn't happen from the outside—it begins when communities find their voice and take action.",
+      description:
+        "Powerful narratives of communities transforming their own futures",
+      story:
+        "Change doesn't happen from the outside—it begins when communities find their voice and take action.",
       color: "#F38181",
       gradient: "linear-gradient(135deg, #F38181, #FCE38A)",
       tags: ["Social Impact", "Documentary", "Community"],
@@ -257,8 +272,10 @@ export default function Portfolio() {
       category: "impact stories",
       videoId: "8uIJrSUAq7E",
       thumbnail: "https://img.youtube.com/vi/8uIJrSUAq7E/maxresdefault.jpg",
-      description: "Stories of sustainable development and grassroots innovation",
-      story: "The solutions to tomorrow's challenges are being built today by passionate individuals who refuse to wait.",
+      description:
+        "Stories of sustainable development and grassroots innovation",
+      story:
+        "The solutions to tomorrow's challenges are being built today by passionate individuals who refuse to wait.",
       color: "#F38181",
       gradient: "linear-gradient(135deg, #F38181, #FCE38A)",
       tags: ["Social Impact", "Documentary", "Innovation"],
@@ -271,8 +288,10 @@ export default function Portfolio() {
       category: "impact stories",
       videoId: "I3ZQ_znSmrE",
       thumbnail: "https://img.youtube.com/vi/I3ZQ_znSmrE/maxresdefault.jpg",
-      description: "How education initiatives are breaking cycles of poverty and creating opportunity",
-      story: "Education is the most powerful tool for change—one student, one classroom, one community at a time.",
+      description:
+        "How education initiatives are breaking cycles of poverty and creating opportunity",
+      story:
+        "Education is the most powerful tool for change—one student, one classroom, one community at a time.",
       color: "#F38181",
       gradient: "linear-gradient(135deg, #F38181, #FCE38A)",
       tags: ["Social Impact", "Education", "Empowerment"],
@@ -285,38 +304,42 @@ export default function Portfolio() {
       category: "impact stories",
       videoId: "ayQFu4TPMq8",
       thumbnail: "https://img.youtube.com/vi/ayQFu4TPMq8/maxresdefault.jpg",
-      description: "Documenting frontline workers bringing healthcare access to underserved communities",
-      story: "Healthcare is a human right. These are the stories of those working tirelessly to make that right a reality.",
+      description:
+        "Documenting frontline workers bringing healthcare access to underserved communities",
+      story:
+        "Healthcare is a human right. These are the stories of those working tirelessly to make that right a reality.",
       color: "#F38181",
       gradient: "linear-gradient(135deg, #F38181, #FCE38A)",
       tags: ["Social Impact", "Healthcare", "Documentary"],
       duration: "4 min",
       year: "2023",
     },
-    // NEW COMMERCIAL
     {
       id: 21,
       title: "Brand Evolution Story",
       category: "commercial",
       videoId: "0zKqljHDa68",
       thumbnail: "https://img.youtube.com/vi/0zKqljHDa68/maxresdefault.jpg",
-      description: "A cinematic brand narrative that redefines market positioning",
-      story: "The best brands don't just adapt to change—they create it, inspiring their audience to see the world differently.",
+      description:
+        "A cinematic brand narrative that redefines market positioning",
+      story:
+        "The best brands don't just adapt to change—they create it, inspiring their audience to see the world differently.",
       color: "#4ECDC4",
       gradient: "linear-gradient(135deg, #4ECDC4, #44A08D)",
       tags: ["Commercial", "Branding", "Storytelling"],
       duration: "2.5 min",
       year: "2024",
     },
-    // NEW TRAVEL
     {
       id: 22,
       title: "Hidden Gems of Rwanda",
       category: "travel",
       videoId: "2HUdjIN-bO0",
       thumbnail: "https://img.youtube.com/vi/2HUdjIN-bO0/maxresdefault.jpg",
-      description: "Discovering breathtaking landscapes and vibrant cultures off the beaten path",
-      story: "The best adventures aren't found in guidebooks—they're discovered when you embrace the unexpected.",
+      description:
+        "Discovering breathtaking landscapes and vibrant cultures off the beaten path",
+      story:
+        "The best adventures aren't found in guidebooks—they're discovered when you embrace the unexpected.",
       color: "#A8D8EA",
       gradient: "linear-gradient(135deg, #A8D8EA, #C2E9FB)",
       tags: ["Travel", "Vlog", "Culture"],
@@ -329,8 +352,10 @@ export default function Portfolio() {
       category: "travel",
       videoId: "yYowFOea3jM",
       thumbnail: "https://img.youtube.com/vi/yYowFOea3jM/maxresdefault.jpg",
-      description: "Immersive city experiences capturing the pulse of modern African metropolises",
-      story: "Cities tell stories through their streets, markets, and people—each corner reveals a new chapter.",
+      description:
+        "Immersive city experiences capturing the pulse of modern African metropolises",
+      story:
+        "Cities tell stories through their streets, markets, and people—each corner reveals a new chapter.",
       color: "#A8D8EA",
       gradient: "linear-gradient(135deg, #A8D8EA, #C2E9FB)",
       tags: ["Travel", "Vlog", "Urban"],
@@ -343,23 +368,26 @@ export default function Portfolio() {
       category: "travel",
       videoId: "bFzg0W34iuM",
       thumbnail: "https://img.youtube.com/vi/bFzg0W34iuM/maxresdefault.jpg",
-      description: "A journey along stunning coastlines, exploring local life and natural wonders",
-      story: "Where land meets water, adventure meets serenity—the coast offers endless stories waiting to be told.",
+      description:
+        "A journey along stunning coastlines, exploring local life and natural wonders",
+      story:
+        "Where land meets water, adventure meets serenity—the coast offers endless stories waiting to be told.",
       color: "#A8D8EA",
       gradient: "linear-gradient(135deg, #A8D8EA, #C2E9FB)",
       tags: ["Travel", "Vlog", "Nature"],
       duration: "10 min",
       year: "2023",
     },
-    // NEW PODCAST
     {
       id: 25,
       title: "The Creative Process Podcast",
       category: "podcast",
       videoId: "_feIT4BaFiI",
       thumbnail: "https://img.youtube.com/vi/_feIT4BaFiI/maxresdefault.jpg",
-      description: "Deep conversations with creators, innovators, and thought leaders shaping the future",
-      story: "The best ideas emerge from dialogue—these conversations explore the creative journeys that inspire change.",
+      description:
+        "Deep conversations with creators, innovators, and thought leaders shaping the future",
+      story:
+        "The best ideas emerge from dialogue—these conversations explore the creative journeys that inspire change.",
       color: "#FCBAD3",
       gradient: "linear-gradient(135deg, #FCBAD3, #FFFFD2)",
       tags: ["Podcast", "Insights", "Creativity"],
@@ -372,20 +400,31 @@ export default function Portfolio() {
       category: "travel",
       videoId: "QRjotW2RCsw",
       thumbnail: "https://img.youtube.com/vi/QRjotW2RCsw/maxresdefault.jpg",
-      description: "This is a travel vlog for our first 3 days of traveling the whole country in only 6 days. The trajectory was the North, West, and South parts of Rwanda. Hope you enjoy the ride!!",
+      description:
+        "This is a travel vlog for our first 3 days of traveling the whole country in only 6 days. The trajectory was the North, West, and South parts of Rwanda. Hope you enjoy the ride!!",
       story: "Story here",
       color: "#A8D8EA",
       gradient: "linear-gradient(135deg, #A8D8EA, #C2E9FB)",
       tags: ["Travel", "Vlog", "Content Creation"],
       duration: "5-10 min",
-      year: "2023"
+      year: "2023",
     },
   ];
 
+  // Filter projects based on active filter
   const filteredProjects =
     activeFilter === "all"
       ? projects
       : projects.filter((project) => project.category === activeFilter);
+
+  // For "All" filter, show only initial 6 videos unless "See More" is clicked
+  const displayedProjects =
+    activeFilter === "all" && !showAll
+      ? projects.filter((p) => initialVideoIds.includes(p.id))
+      : filteredProjects;
+
+  const hasMoreVideos =
+    activeFilter === "all" && filteredProjects.length > initialVideoIds.length;
 
   const openVideo = (project) => {
     setSelectedVideo(project);
@@ -397,13 +436,35 @@ export default function Portfolio() {
     setTimeout(() => setSelectedVideo(null), 300);
   };
 
+  const handleSeeMore = () => {
+    setShowAll(true);
+  };
+
+  const handleSeeLess = () => {
+    setShowAll(false);
+    // Scroll to portfolio section
+    document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Reset showAll when filter changes
+  useEffect(() => {
+    setShowAll(false);
+  }, [activeFilter]);
+
   return (
-    <section className="section portfolio-section" id="portfolio" ref={ref}>
+    <section
+      className="section portfolio-section"
+      id="portfolio"
+      ref={ref}
+      style={{
+        padding: isMobile ? "4rem 1.5rem" : "6rem 2rem",
+      }}
+    >
       {/* Apple-Style Header */}
       <motion.div
         style={{
           textAlign: "center",
-          marginBottom: "4rem",
+          marginBottom: isMobile ? "3rem" : "4rem",
         }}
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -413,17 +474,21 @@ export default function Portfolio() {
           className="section-title"
           style={{
             marginBottom: "1rem",
+            fontSize: isMobile
+              ? "clamp(2rem, 8vw, 3rem)"
+              : "clamp(2.5rem, 5vw, 4rem)",
           }}
         >
           Portfolio
         </motion.h2>
         <motion.p
           style={{
-            fontSize: "1.5rem",
+            fontSize: isMobile ? "1.1rem" : "1.5rem",
             color: "#B0B0B0",
             maxWidth: "700px",
             margin: "0 auto",
             fontWeight: "300",
+            lineHeight: "1.6",
           }}
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -437,13 +502,13 @@ export default function Portfolio() {
       <motion.div
         style={{
           position: "sticky",
-          top: "80px",
+          top: isMobile ? "70px" : "80px",
           zIndex: 100,
           background: "rgba(10, 10, 10, 0.8)",
           backdropFilter: "blur(20px)",
-          padding: "1.5rem 2rem",
-          borderRadius: "20px",
-          marginBottom: "3rem",
+          padding: isMobile ? "1rem 1rem" : "1.5rem 2rem",
+          borderRadius: isMobile ? "15px" : "20px",
+          marginBottom: isMobile ? "2rem" : "3rem",
           border: "1px solid rgba(255,255,255,0.1)",
           boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
         }}
@@ -454,7 +519,7 @@ export default function Portfolio() {
         <div
           style={{
             display: "flex",
-            gap: "0.5rem",
+            gap: isMobile ? "0.4rem" : "0.5rem",
             overflowX: "auto",
             scrollbarWidth: "none",
             msOverflowStyle: "none",
@@ -469,10 +534,10 @@ export default function Portfolio() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 + index * 0.05 }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={!isMobile ? { scale: 1.05 } : {}}
               whileTap={{ scale: 0.95 }}
               style={{
-                padding: "0.8rem 1.5rem",
+                padding: isMobile ? "0.7rem 1.2rem" : "0.8rem 1.5rem",
                 background:
                   activeFilter === filter.id
                     ? "rgba(212, 175, 55, 0.15)"
@@ -483,18 +548,21 @@ export default function Portfolio() {
                     : "2px solid transparent",
                 borderRadius: "50px",
                 color: activeFilter === filter.id ? "#D4AF37" : "#B0B0B0",
-                fontSize: "0.95rem",
+                fontSize: isMobile ? "0.8rem" : "0.95rem",
                 fontWeight: "600",
                 cursor: "pointer",
                 transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 whiteSpace: "nowrap",
                 display: "flex",
                 alignItems: "center",
-                gap: "0.5rem",
+                gap: isMobile ? "0.4rem" : "0.5rem",
                 backdropFilter: "blur(10px)",
+                touchAction: "manipulation",
               }}
             >
-              <span style={{ fontSize: "1.1rem" }}>{filter.icon}</span>
+              <span style={{ fontSize: isMobile ? "0.95rem" : "1.1rem" }}>
+                {filter.icon}
+              </span>
               <span>{filter.label}</span>
               {activeFilter === filter.id && (
                 <motion.span
@@ -519,16 +587,18 @@ export default function Portfolio() {
           key={activeFilter}
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(400px, 1fr))",
-            gap: "2rem",
-            padding: "0 1rem",
+            gridTemplateColumns: isMobile
+              ? "1fr"
+              : "repeat(auto-fill, minmax(350px, 1fr))",
+            gap: isMobile ? "1.5rem" : "2rem",
+            padding: "0",
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {filteredProjects.map((project, index) => (
+          {displayedProjects.map((project, index) => (
             <AppleCard
               key={project.id}
               project={project}
@@ -537,10 +607,72 @@ export default function Portfolio() {
               isHovered={hoveredCard === project.id}
               onHover={() => setHoveredCard(project.id)}
               onLeave={() => setHoveredCard(null)}
+              isMobile={isMobile}
             />
           ))}
         </motion.div>
       </AnimatePresence>
+
+      {/* See More / See Less Button */}
+      {hasMoreVideos && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: isMobile ? "2.5rem" : "3rem",
+          }}
+        >
+          <motion.button
+            onClick={showAll ? handleSeeLess : handleSeeMore}
+            whileHover={!isMobile ? { scale: 1.05 } : {}}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              padding: isMobile ? "1rem 2.5rem" : "1.2rem 3rem",
+              background: showAll
+                ? "rgba(255,255,255,0.05)"
+                : "linear-gradient(135deg, #D4AF37, #FFE55C)",
+              color: showAll ? "#D4AF37" : "#000",
+              border: showAll ? "2px solid #D4AF37" : "none",
+              borderRadius: "50px",
+              fontSize: isMobile ? "1rem" : "1.1rem",
+              fontWeight: "700",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              boxShadow: showAll
+                ? "0 10px 30px rgba(212, 175, 55, 0.2)"
+                : "0 20px 40px rgba(212, 175, 55, 0.4)",
+              transition: "all 0.3s ease",
+              touchAction: "manipulation",
+            }}
+          >
+            <span>{showAll ? "Show Less" : "See More Videos"}</span>
+            <motion.span
+              animate={{ y: showAll ? [-2, 2, -2] : [2, -2, 2] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              style={{ fontSize: "1.2rem" }}
+            >
+              {showAll ? "↑" : "↓"}
+            </motion.span>
+            {!showAll && (
+              <span
+                style={{
+                  padding: "0.3rem 0.7rem",
+                  background: "rgba(0,0,0,0.2)",
+                  borderRadius: "20px",
+                  fontSize: "0.85rem",
+                }}
+              >
+                +{filteredProjects.length - initialVideoIds.length}
+              </span>
+            )}
+          </motion.button>
+        </motion.div>
+      )}
 
       {/* Apple-Style Video Modal */}
       {selectedVideo && (
@@ -548,6 +680,7 @@ export default function Portfolio() {
           isOpen={isModalOpen}
           video={selectedVideo}
           onClose={closeVideo}
+          isMobile={isMobile}
         />
       )}
     </section>
@@ -555,7 +688,15 @@ export default function Portfolio() {
 }
 
 // Apple-Style Card Component
-function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
+function AppleCard({
+  project,
+  index,
+  onClick,
+  isHovered,
+  onHover,
+  onLeave,
+  isMobile,
+}) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
@@ -572,18 +713,23 @@ function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
       onClick={onClick}
       style={{
         cursor: "pointer",
-        borderRadius: "24px",
+        borderRadius: isMobile ? "20px" : "24px",
         overflow: "hidden",
         background: "rgba(20,20,20,0.6)",
         backdropFilter: "blur(20px)",
         border: "1px solid rgba(255,255,255,0.08)",
         transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
       }}
-      whileHover={{
-        y: -8,
-        boxShadow: `0 20px 60px ${project.color}30`,
-        borderColor: `${project.color}40`,
-      }}
+      whileHover={
+        !isMobile
+          ? {
+              y: -8,
+              boxShadow: `0 20px 60px ${project.color}30`,
+              borderColor: `${project.color}40`,
+            }
+          : {}
+      }
+      whileTap={{ scale: 0.98 }}
     >
       {/* Image Container */}
       <div
@@ -609,7 +755,7 @@ function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
             transition: "all 0.6s ease",
           }}
           animate={{
-            scale: isHovered ? 1.05 : 1,
+            scale: isHovered && !isMobile ? 1.05 : 1,
           }}
           transition={{ duration: 0.6 }}
         />
@@ -623,56 +769,58 @@ function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
             opacity: 0,
           }}
           animate={{
-            opacity: isHovered ? 1 : 0,
+            opacity: isHovered && !isMobile ? 1 : 0,
           }}
           transition={{ duration: 0.4 }}
         />
 
         {/* Play Button */}
-        <motion.div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "70px",
-            height: "70px",
-            borderRadius: "50%",
-            background: "rgba(255,255,255,0.95)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backdropFilter: "blur(10px)",
-            boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
-          }}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{
-            scale: isHovered ? 1 : 0,
-            opacity: isHovered ? 1 : 0,
-          }}
-          transition={{
-            duration: 0.4,
-            ease: [0.34, 1.56, 0.64, 1],
-          }}
-        >
+        {!isMobile && (
           <motion.div
             style={{
-              width: 0,
-              height: 0,
-              borderLeft: "18px solid #000",
-              borderTop: "12px solid transparent",
-              borderBottom: "12px solid transparent",
-              marginLeft: "4px",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "70px",
+              height: "70px",
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.95)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backdropFilter: "blur(10px)",
+              boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
             }}
+            initial={{ scale: 0, opacity: 0 }}
             animate={{
-              scale: isHovered ? [1, 1.1, 1] : 1,
+              scale: isHovered ? 1 : 0,
+              opacity: isHovered ? 1 : 0,
             }}
             transition={{
-              duration: 1,
-              repeat: Infinity,
+              duration: 0.4,
+              ease: [0.34, 1.56, 0.64, 1],
             }}
-          />
-        </motion.div>
+          >
+            <motion.div
+              style={{
+                width: 0,
+                height: 0,
+                borderLeft: "18px solid #000",
+                borderTop: "12px solid transparent",
+                borderBottom: "12px solid transparent",
+                marginLeft: "4px",
+              }}
+              animate={{
+                scale: isHovered ? [1, 1.1, 1] : 1,
+              }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+              }}
+            />
+          </motion.div>
+        )}
 
         {/* Duration Badge */}
         <motion.div
@@ -680,11 +828,11 @@ function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
             position: "absolute",
             top: "1rem",
             right: "1rem",
-            padding: "0.5rem 1rem",
+            padding: isMobile ? "0.4rem 0.9rem" : "0.5rem 1rem",
             background: "rgba(0,0,0,0.8)",
             backdropFilter: "blur(20px)",
             borderRadius: "20px",
-            fontSize: "0.85rem",
+            fontSize: isMobile ? "0.75rem" : "0.85rem",
             fontWeight: "600",
             color: "#fff",
           }}
@@ -699,7 +847,7 @@ function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
       {/* Content */}
       <div
         style={{
-          padding: "1.5rem",
+          padding: isMobile ? "1.25rem" : "1.5rem",
           position: "relative",
         }}
       >
@@ -707,10 +855,10 @@ function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
         <motion.div
           style={{
             display: "inline-block",
-            padding: "0.4rem 1rem",
+            padding: isMobile ? "0.35rem 0.9rem" : "0.4rem 1rem",
             background: `${project.color}20`,
             borderRadius: "20px",
-            fontSize: "0.75rem",
+            fontSize: isMobile ? "0.7rem" : "0.75rem",
             fontWeight: "700",
             textTransform: "uppercase",
             letterSpacing: "1px",
@@ -724,7 +872,7 @@ function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
 
         <h3
           style={{
-            fontSize: "1.5rem",
+            fontSize: isMobile ? "1.2rem" : "1.5rem",
             fontWeight: "700",
             marginBottom: "0.5rem",
             color: "#fff",
@@ -737,7 +885,7 @@ function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
         <p
           style={{
             color: "#B0B0B0",
-            fontSize: "0.95rem",
+            fontSize: isMobile ? "0.85rem" : "0.95rem",
             lineHeight: "1.5",
             marginBottom: "1rem",
           }}
@@ -758,10 +906,10 @@ function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
             <span
               key={idx}
               style={{
-                padding: "0.3rem 0.8rem",
+                padding: isMobile ? "0.25rem 0.7rem" : "0.3rem 0.8rem",
                 background: "rgba(255,255,255,0.05)",
                 borderRadius: "12px",
-                fontSize: "0.75rem",
+                fontSize: isMobile ? "0.7rem" : "0.75rem",
                 color: "#808080",
                 border: "1px solid rgba(255,255,255,0.08)",
               }}
@@ -778,18 +926,18 @@ function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
             alignItems: "center",
             gap: "0.5rem",
             color: project.color,
-            fontSize: "0.95rem",
+            fontSize: isMobile ? "0.85rem" : "0.95rem",
             fontWeight: "600",
           }}
           animate={{
-            x: isHovered ? 5 : 0,
+            x: isHovered && !isMobile ? 5 : 0,
           }}
           transition={{ duration: 0.3 }}
         >
           <span>Watch Now</span>
           <motion.span
             animate={{
-              x: isHovered ? [0, 5, 0] : 0,
+              x: isHovered && !isMobile ? [0, 5, 0] : 0,
             }}
             transition={{
               duration: 1,
@@ -805,7 +953,7 @@ function AppleCard({ project, index, onClick, isHovered, onHover, onLeave }) {
 }
 
 // Apple-Style Video Modal
-function AppleVideoModal({ isOpen, video, onClose }) {
+function AppleVideoModal({ isOpen, video, onClose, isMobile }) {
   if (!video) return null;
 
   return (
@@ -836,16 +984,16 @@ function AppleVideoModal({ isOpen, video, onClose }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              padding: "2rem",
+              padding: isMobile ? "1rem" : "2rem",
               overflow: "auto",
             }}
           >
             <motion.div
               style={{
                 width: "100%",
-                maxWidth: "1400px",
+                maxWidth: isMobile ? "100%" : "1400px",
                 background: "#000",
-                borderRadius: "24px",
+                borderRadius: isMobile ? "20px" : "24px",
                 overflow: "hidden",
                 boxShadow: `0 0 100px ${video.color}40`,
               }}
@@ -863,27 +1011,25 @@ function AppleVideoModal({ isOpen, video, onClose }) {
                 onClick={onClose}
                 style={{
                   position: "absolute",
-                  top: "1.5rem",
-                  right: "1.5rem",
-                  width: "44px",
-                  height: "44px",
+                  top: isMobile ? "1rem" : "1.5rem",
+                  right: isMobile ? "1rem" : "1.5rem",
+                  width: isMobile ? "40px" : "44px",
+                  height: isMobile ? "40px" : "44px",
                   borderRadius: "50%",
                   background: "rgba(255,255,255,0.15)",
                   backdropFilter: "blur(20px)",
                   border: "none",
                   color: "#fff",
-                  fontSize: "1.5rem",
+                  fontSize: isMobile ? "1.3rem" : "1.5rem",
                   cursor: "pointer",
                   zIndex: 10,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   fontWeight: "300",
+                  touchAction: "manipulation",
                 }}
-                whileHover={{
-                  scale: 1.1,
-                  background: "rgba(255,255,255,0.25)",
-                }}
+                whileHover={{ scale: 1.1, background: "rgba(255,255,255,0.25)" }}
                 whileTap={{ scale: 0.95 }}
               >
                 ×
@@ -915,7 +1061,7 @@ function AppleVideoModal({ isOpen, video, onClose }) {
               {/* Info Section */}
               <div
                 style={{
-                  padding: "2.5rem",
+                  padding: isMobile ? "1.5rem" : "2.5rem",
                   background: `linear-gradient(to bottom, #000, ${video.color}10)`,
                 }}
               >
@@ -928,16 +1074,17 @@ function AppleVideoModal({ isOpen, video, onClose }) {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "1rem",
-                      marginBottom: "1.5rem",
+                      gap: isMobile ? "0.75rem" : "1rem",
+                      marginBottom: isMobile ? "1rem" : "1.5rem",
+                      flexWrap: "wrap",
                     }}
                   >
                     <span
                       style={{
-                        padding: "0.5rem 1rem",
+                        padding: isMobile ? "0.4rem 0.9rem" : "0.5rem 1rem",
                         background: video.gradient,
                         borderRadius: "20px",
-                        fontSize: "0.85rem",
+                        fontSize: isMobile ? "0.75rem" : "0.85rem",
                         fontWeight: "700",
                         textTransform: "uppercase",
                         letterSpacing: "1px",
@@ -948,10 +1095,10 @@ function AppleVideoModal({ isOpen, video, onClose }) {
                     </span>
                     <span
                       style={{
-                        padding: "0.5rem 1rem",
+                        padding: isMobile ? "0.4rem 0.9rem" : "0.5rem 1rem",
                         background: "rgba(255,255,255,0.05)",
                         borderRadius: "20px",
-                        fontSize: "0.85rem",
+                        fontSize: isMobile ? "0.75rem" : "0.85rem",
                         color: "#B0B0B0",
                       }}
                     >
@@ -959,10 +1106,10 @@ function AppleVideoModal({ isOpen, video, onClose }) {
                     </span>
                     <span
                       style={{
-                        padding: "0.5rem 1rem",
+                        padding: isMobile ? "0.4rem 0.9rem" : "0.5rem 1rem",
                         background: "rgba(255,255,255,0.05)",
                         borderRadius: "20px",
-                        fontSize: "0.85rem",
+                        fontSize: isMobile ? "0.75rem" : "0.85rem",
                         color: "#B0B0B0",
                       }}
                     >
@@ -972,7 +1119,9 @@ function AppleVideoModal({ isOpen, video, onClose }) {
 
                   <h2
                     style={{
-                      fontSize: "2.5rem",
+                      fontSize: isMobile
+                        ? "clamp(1.5rem, 6vw, 2rem)"
+                        : "2.5rem",
                       fontWeight: "700",
                       marginBottom: "1rem",
                       color: "#fff",
@@ -984,10 +1133,10 @@ function AppleVideoModal({ isOpen, video, onClose }) {
 
                   <p
                     style={{
-                      fontSize: "1.2rem",
+                      fontSize: isMobile ? "1rem" : "1.2rem",
                       color: "#B0B0B0",
                       lineHeight: "1.6",
-                      marginBottom: "1.5rem",
+                      marginBottom: isMobile ? "1rem" : "1.5rem",
                     }}
                   >
                     {video.description}
@@ -996,11 +1145,11 @@ function AppleVideoModal({ isOpen, video, onClose }) {
                   <blockquote
                     style={{
                       borderLeft: `4px solid ${video.color}`,
-                      paddingLeft: "1.5rem",
+                      paddingLeft: isMobile ? "1rem" : "1.5rem",
                       fontStyle: "italic",
                       color: video.color,
-                      fontSize: "1.1rem",
-                      marginBottom: "2rem",
+                      fontSize: isMobile ? "0.95rem" : "1.1rem",
+                      marginBottom: isMobile ? "1.5rem" : "2rem",
                       lineHeight: "1.6",
                     }}
                   >
@@ -1010,7 +1159,7 @@ function AppleVideoModal({ isOpen, video, onClose }) {
                   <div
                     style={{
                       display: "flex",
-                      gap: "0.75rem",
+                      gap: isMobile ? "0.5rem" : "0.75rem",
                       flexWrap: "wrap",
                     }}
                   >
@@ -1020,17 +1169,21 @@ function AppleVideoModal({ isOpen, video, onClose }) {
                         initial={{ scale: 0, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.3 + idx * 0.1 }}
-                        whileHover={{
-                          scale: 1.05,
-                          background: `${video.color}20`,
-                          borderColor: video.color,
-                        }}
+                        whileHover={
+                          !isMobile
+                            ? {
+                                scale: 1.05,
+                                background: `${video.color}20`,
+                                borderColor: video.color,
+                              }
+                            : {}
+                        }
                         style={{
-                          padding: "0.6rem 1.2rem",
+                          padding: isMobile ? "0.5rem 1rem" : "0.6rem 1.2rem",
                           background: "rgba(255,255,255,0.05)",
                           border: "1px solid rgba(255,255,255,0.1)",
                           borderRadius: "20px",
-                          fontSize: "0.9rem",
+                          fontSize: isMobile ? "0.8rem" : "0.9rem",
                           color: "#B0B0B0",
                           cursor: "default",
                           transition: "all 0.3s ease",

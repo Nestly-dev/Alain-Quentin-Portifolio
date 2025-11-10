@@ -1,4 +1,4 @@
-// components/Contact.js - WITH EMAILJS INTEGRATION (USING ENV VARIABLES)
+// components/Contact.js - MOBILE OPTIMIZED WITH EMAILJS
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
@@ -8,6 +8,7 @@ import emailjs from '@emailjs/browser'
 
 export default function Contact() {
   const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true })
+  const [isMobile, setIsMobile] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,13 +21,19 @@ export default function Contact() {
   const [focusedField, setFocusedField] = useState(null)
   const [formStatus, setFormStatus] = useState(null)
 
-  // Initialize EmailJS on component mount
   useEffect(() => {
-    // Initialize with public key from environment variable
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
     if (publicKey) {
       emailjs.init(publicKey)
     }
+    
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   const projectTypes = [
@@ -42,7 +49,6 @@ export default function Contact() {
     setIsSubmitting(true)
     
     try {
-      // Prepare the template parameters
       const templateParams = {
         from_name: formData.name,
         from_email: formData.email,
@@ -52,23 +58,16 @@ export default function Contact() {
         message: formData.message
       }
 
-      // Get EmailJS credentials from environment variables
       const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
       const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
 
-      // Send email using EmailJS
-      const result = await emailjs.send(
-        serviceId,
-        templateId,
-        templateParams
-      )
+      const result = await emailjs.send(serviceId, templateId, templateParams)
 
       console.log('Email sent successfully!', result.status, result.text)
       
       setIsSubmitting(false)
       setFormStatus('success')
       
-      // Reset form after success
       setTimeout(() => {
         setFormData({
           name: '',
@@ -86,7 +85,6 @@ export default function Contact() {
       setIsSubmitting(false)
       setFormStatus('error')
       
-      // Show error message to user
       alert('Failed to send message. Please try again or email directly at ialainquentin@gmail.com')
     }
   }
@@ -105,25 +103,35 @@ export default function Contact() {
   ]
 
   return (
-    <section className="section contact-section" id="contact" ref={ref}>
+    <section 
+      className="section contact-section" 
+      id="contact" 
+      ref={ref}
+      style={{
+        padding: isMobile ? '4rem 1.5rem' : '6rem 2rem'
+      }}
+    >
       <motion.h2
         className="section-title"
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8 }}
+        style={{
+          fontSize: isMobile ? 'clamp(2rem, 8vw, 3rem)' : 'clamp(2.5rem, 5vw, 4rem)'
+        }}
       >
         Let's Create Something Amazing
       </motion.h2>
 
-      {/* Animated subtitle */}
       <motion.p
         style={{
           textAlign: 'center',
-          fontSize: '1.3rem',
+          fontSize: isMobile ? '1.1rem' : '1.3rem',
           color: '#B0B0B0',
           maxWidth: '600px',
-          margin: '0 auto 4rem',
-          lineHeight: '1.6'
+          margin: '0 auto 3rem',
+          lineHeight: '1.6',
+          padding: isMobile ? '0 1rem' : '0'
         }}
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -137,9 +145,21 @@ export default function Contact() {
         initial={{ opacity: 0, y: 50 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, delay: 0.3 }}
+        style={{
+          maxWidth: '1200px',
+          margin: '0 auto'
+        }}
       >
-        <div className="contact-content">
-          {/* Enhanced Contact Info */}
+        <div 
+          className="contact-content"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1.2fr',
+            gap: isMobile ? '3rem' : '4rem',
+            alignItems: 'start'
+          }}
+        >
+          {/* Contact Info */}
           <motion.div
             className="contact-info"
             initial={{ opacity: 0, x: -50 }}
@@ -150,6 +170,12 @@ export default function Contact() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.5 }}
+              style={{
+                fontSize: isMobile ? '1.5rem' : '2rem',
+                fontWeight: '700',
+                marginBottom: '1rem',
+                color: '#fff'
+              }}
             >
               Ready to Start Your Project?
             </motion.h3>
@@ -158,6 +184,12 @@ export default function Contact() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.6 }}
+              style={{
+                color: '#B0B0B0',
+                lineHeight: '1.7',
+                marginBottom: '2rem',
+                fontSize: isMobile ? '0.95rem' : '1.05rem'
+              }}
             >
               I'm always excited to work on new creative challenges. Whether you need a commercial, documentary, or any video content, let's discuss how we can bring your vision to life.
             </motion.p>
@@ -174,30 +206,41 @@ export default function Contact() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={inView ? { opacity: 1, x: 0 } : {}}
                   transition={{ delay: 0.7 + index * 0.1 }}
-                  whileHover={{ x: 10, scale: 1.05 }}
+                  whileHover={!isMobile ? { x: 10, scale: 1.05 } : {}}
+                  whileTap={{ scale: 0.98 }}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '1rem',
-                    padding: '1rem',
+                    padding: isMobile ? '0.9rem' : '1rem',
                     background: 'rgba(255,255,255,0.03)',
                     borderRadius: '15px',
                     marginBottom: '1rem',
                     border: '1px solid rgba(255,255,255,0.05)',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    touchAction: 'manipulation'
                   }}
                 >
                   <motion.span 
-                    style={{ fontSize: '1.5rem' }}
-                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    style={{ fontSize: isMobile ? '1.3rem' : '1.5rem' }}
+                    whileHover={!isMobile ? { scale: 1.2, rotate: 10 } : {}}
                   >
                     {item.icon}
                   </motion.span>
                   <div>
-                    <div style={{ fontSize: '0.8rem', color: '#808080', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                    <div style={{ 
+                      fontSize: '0.75rem', 
+                      color: '#808080', 
+                      textTransform: 'uppercase', 
+                      letterSpacing: '1px' 
+                    }}>
                       {item.label}
                     </div>
-                    <div style={{ color: '#fff', fontWeight: '600' }}>
+                    <div style={{ 
+                      color: '#fff', 
+                      fontWeight: '600',
+                      fontSize: isMobile ? '0.9rem' : '1rem'
+                    }}>
                       {item.text}
                     </div>
                   </div>
@@ -205,7 +248,7 @@ export default function Contact() {
               ))}
             </div>
 
-            {/* Enhanced Social Links */}
+            {/* Social Links */}
             <motion.div
               style={{ marginTop: '3rem' }}
               initial={{ opacity: 0, y: 20 }}
@@ -213,7 +256,7 @@ export default function Contact() {
               transition={{ delay: 1 }}
             >
               <h4 style={{ 
-                fontSize: '1rem', 
+                fontSize: isMobile ? '0.9rem' : '1rem', 
                 color: '#B0B0B0', 
                 marginBottom: '1rem',
                 textTransform: 'uppercase',
@@ -222,7 +265,14 @@ export default function Contact() {
               }}>
                 Connect With Me
               </h4>
-              <div className="social-links">
+              <div 
+                className="social-links"
+                style={{
+                  display: 'flex',
+                  gap: isMobile ? '0.75rem' : '1rem',
+                  flexWrap: 'wrap'
+                }}
+              >
                 {socialLinks.map((social, index) => (
                   <motion.a
                     key={social.name}
@@ -233,20 +283,31 @@ export default function Contact() {
                     initial={{ opacity: 0, scale: 0 }}
                     animate={inView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ delay: 1.1 + index * 0.1, type: "spring" }}
-                    whileHover={{ 
+                    whileHover={!isMobile ? { 
                       scale: 1.15, 
                       y: -5,
                       background: social.color,
                       color: '#fff',
                       boxShadow: `0 10px 30px ${social.color}60`
-                    }}
+                    } : {}}
+                    whileTap={{ scale: 0.95 }}
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: '0.5rem'
+                      gap: '0.5rem',
+                      padding: isMobile ? '0.75rem 1.25rem' : '0.9rem 1.5rem',
+                      background: 'rgba(255,255,255,0.05)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: '50px',
+                      color: '#fff',
+                      textDecoration: 'none',
+                      fontSize: isMobile ? '0.85rem' : '0.95rem',
+                      fontWeight: '600',
+                      transition: 'all 0.3s ease',
+                      touchAction: 'manipulation'
                     }}
                   >
-                    <span>{social.icon}</span>
+                    <span style={{ fontSize: isMobile ? '1.1rem' : '1.2rem' }}>{social.icon}</span>
                     <span>{social.name}</span>
                   </motion.a>
                 ))}
@@ -257,7 +318,7 @@ export default function Contact() {
             <motion.div
               style={{
                 marginTop: '2rem',
-                padding: '1rem',
+                padding: isMobile ? '0.9rem' : '1rem',
                 background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 212, 255, 0.1))',
                 borderRadius: '15px',
                 border: '1px solid rgba(212, 175, 55, 0.3)',
@@ -275,7 +336,8 @@ export default function Contact() {
                   height: '12px',
                   background: '#4ADE80',
                   borderRadius: '50%',
-                  boxShadow: '0 0 20px #4ADE80'
+                  boxShadow: '0 0 20px #4ADE80',
+                  flexShrink: 0
                 }}
                 animate={{
                   scale: [1, 1.2, 1],
@@ -286,13 +348,16 @@ export default function Contact() {
                   repeat: Infinity
                 }}
               />
-              <span style={{ color: '#B0B0B0' }}>
+              <span style={{ 
+                color: '#B0B0B0',
+                fontSize: isMobile ? '0.9rem' : '1rem'
+              }}>
                 Available for new projects
               </span>
             </motion.div>
           </motion.div>
 
-          {/* Enhanced Form */}
+          {/* Form - Continues in next part due to length */}
           <motion.form
             className="contact-form"
             onSubmit={handleSubmit}
@@ -300,7 +365,14 @@ export default function Contact() {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            <div className="form-row">
+            <div 
+              className="form-row" 
+              style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                gap: isMobile ? '1rem' : '1.5rem'
+              }}
+            >
               <FormField
                 label="Name"
                 name="name"
@@ -310,6 +382,7 @@ export default function Contact() {
                 onFocus={() => setFocusedField('name')}
                 onBlur={() => setFocusedField(null)}
                 isFocused={focusedField === 'name'}
+                isMobile={isMobile}
                 required
                 icon="👤"
               />
@@ -323,12 +396,20 @@ export default function Contact() {
                 onFocus={() => setFocusedField('email')}
                 onBlur={() => setFocusedField(null)}
                 isFocused={focusedField === 'email'}
+                isMobile={isMobile}
                 required
                 icon="✉️"
               />
             </div>
 
-            <div className="form-row">
+            <div 
+              className="form-row"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                gap: isMobile ? '1rem' : '1.5rem'
+              }}
+            >
               <FormField
                 label="Company"
                 name="company"
@@ -338,6 +419,7 @@ export default function Contact() {
                 onFocus={() => setFocusedField('company')}
                 onBlur={() => setFocusedField(null)}
                 isFocused={focusedField === 'company'}
+                isMobile={isMobile}
                 icon="🏢"
               />
 
@@ -350,6 +432,7 @@ export default function Contact() {
                 onFocus={() => setFocusedField('budget')}
                 onBlur={() => setFocusedField(null)}
                 isFocused={focusedField === 'budget'}
+                isMobile={isMobile}
                 options={[
                   { value: "", label: "Select budget" },
                   { value: "200-500", label: "$200 - $500" },
@@ -367,11 +450,24 @@ export default function Contact() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.8 }}
+              style={{
+                marginBottom: isMobile ? '1rem' : '1.5rem'
+              }}
             >
-              <label style={{ marginBottom: '1rem', display: 'block', color: '#fff', fontWeight: '600' }}>
+              <label style={{ 
+                marginBottom: '1rem', 
+                display: 'block', 
+                color: '#fff', 
+                fontWeight: '600',
+                fontSize: isMobile ? '0.9rem' : '1rem'
+              }}>
                 Project Type
               </label>
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div style={{ 
+                display: 'grid',
+                gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(140px, 1fr))',
+                gap: isMobile ? '0.75rem' : '1rem'
+              }}>
                 {projectTypes.map((type, index) => (
                   <motion.button
                     key={type.value}
@@ -380,10 +476,10 @@ export default function Contact() {
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.9 + index * 0.05, type: "spring" }}
-                    whileHover={{ scale: 1.1, y: -5 }}
+                    whileHover={!isMobile ? { scale: 1.05, y: -3 } : {}}
                     whileTap={{ scale: 0.95 }}
                     style={{
-                      padding: '1rem 1.5rem',
+                      padding: isMobile ? '0.9rem 1rem' : '1rem 1.5rem',
                       background: formData.projectType === type.value 
                         ? 'linear-gradient(135deg, #D4AF37, #FFE55C)'
                         : 'rgba(255,255,255,0.05)',
@@ -393,15 +489,17 @@ export default function Contact() {
                       borderRadius: '15px',
                       color: formData.projectType === type.value ? '#000' : '#fff',
                       cursor: 'pointer',
-                      fontSize: '1rem',
+                      fontSize: isMobile ? '0.85rem' : '1rem',
                       fontWeight: '600',
                       display: 'flex',
                       alignItems: 'center',
+                      justifyContent: 'center',
                       gap: '0.5rem',
-                      transition: 'all 0.3s'
+                      transition: 'all 0.3s',
+                      touchAction: 'manipulation'
                     }}
                   >
-                    <span style={{ fontSize: '1.3rem' }}>{type.icon}</span>
+                    <span style={{ fontSize: isMobile ? '1.1rem' : '1.3rem' }}>{type.icon}</span>
                     <span>{type.label}</span>
                   </motion.button>
                 ))}
@@ -417,6 +515,7 @@ export default function Contact() {
               onFocus={() => setFocusedField('message')}
               onBlur={() => setFocusedField(null)}
               isFocused={focusedField === 'message'}
+              isMobile={isMobile}
               placeholder="Tell me about your project, timeline, and vision..."
               required
               rows={6}
@@ -427,12 +526,22 @@ export default function Contact() {
               type="submit"
               className="submit-btn"
               disabled={isSubmitting || formStatus === 'success'}
-              whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(212, 175, 55, 0.4)" }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={!isMobile ? { scale: 1.02, boxShadow: "0 20px 40px rgba(212, 175, 55, 0.4)" } : {}}
+              whileTap={{ scale: 0.98 }}
               animate={isSubmitting ? { opacity: 0.7 } : { opacity: 1 }}
               style={{
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                width: '100%',
+                padding: isMobile ? '1.1rem 2rem' : '1.3rem 2.5rem',
+                background: 'linear-gradient(135deg, #D4AF37, #FFE55C)',
+                color: '#000',
+                border: 'none',
+                borderRadius: '50px',
+                fontSize: isMobile ? '1rem' : '1.1rem',
+                fontWeight: '700',
+                cursor: isSubmitting || formStatus === 'success' ? 'not-allowed' : 'pointer',
+                touchAction: 'manipulation'
               }}
             >
               {/* Button Background Animation */}
@@ -461,8 +570,8 @@ export default function Contact() {
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                       style={{
                         display: 'inline-block',
-                        width: '20px',
-                        height: '20px',
+                        width: '18px',
+                        height: '18px',
                         border: '2px solid rgba(0,0,0,0.3)',
                         borderTop: '2px solid #000',
                         borderRadius: '50%'
@@ -497,7 +606,7 @@ export default function Contact() {
               </span>
             </motion.button>
 
-            {/* Success Message */}
+            {/* Status Messages */}
             <AnimatePresence>
               {formStatus === 'success' && (
                 <motion.div
@@ -511,7 +620,8 @@ export default function Contact() {
                     borderRadius: '15px',
                     color: '#4ADE80',
                     textAlign: 'center',
-                    marginTop: '1rem'
+                    marginTop: '1rem',
+                    fontSize: isMobile ? '0.9rem' : '1rem'
                   }}
                 >
                   Thanks for reaching out! I'll get back to you within 24 hours.
@@ -529,7 +639,8 @@ export default function Contact() {
                     borderRadius: '15px',
                     color: '#EF4444',
                     textAlign: 'center',
-                    marginTop: '1rem'
+                    marginTop: '1rem',
+                    fontSize: isMobile ? '0.9rem' : '1rem'
                   }}
                 >
                   Something went wrong. Please try again or email me directly.
@@ -553,6 +664,7 @@ function FormField({
   onFocus, 
   onBlur, 
   isFocused, 
+  isMobile,
   required, 
   placeholder, 
   options, 
@@ -562,23 +674,29 @@ function FormField({
   return (
     <motion.div
       className={`form-group ${type === 'textarea' ? 'full-width' : ''}`}
-      whileFocus={{ scale: 1.02 }}
+      whileFocus={{ scale: 1.01 }}
       transition={{ duration: 0.2 }}
+      style={{
+        marginBottom: isMobile ? '1rem' : '1.5rem'
+      }}
     >
       <motion.label 
         htmlFor={name}
         animate={{
           color: isFocused ? '#D4AF37' : '#fff',
-          scale: isFocused ? 1.05 : 1
+          scale: isFocused ? 1.02 : 1
         }}
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '0.5rem'
+          gap: '0.5rem',
+          marginBottom: '0.5rem',
+          fontSize: isMobile ? '0.9rem' : '1rem',
+          fontWeight: '600'
         }}
       >
         <span>{icon}</span>
-        <span>{label} {required && '*'}</span>
+        <span>{label} {required && <span style={{ color: '#EF4444' }}>*</span>}</span>
       </motion.label>
 
       {type === 'select' ? (
@@ -595,14 +713,15 @@ function FormField({
           }}
           style={{
             width: '100%',
-            padding: '1.2rem',
+            padding: isMobile ? '1rem' : '1.2rem',
             background: 'rgba(255,255,255,0.05)',
             border: '2px solid rgba(255,255,255,0.1)',
             borderRadius: '15px',
             color: '#fff',
-            fontSize: '1rem',
+            fontSize: isMobile ? '0.95rem' : '1rem',
             outline: 'none',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            touchAction: 'manipulation'
           }}
         >
           {options.map(opt => (
@@ -628,15 +747,16 @@ function FormField({
           }}
           style={{
             width: '100%',
-            padding: '1.2rem',
+            padding: isMobile ? '1rem' : '1.2rem',
             background: 'rgba(255,255,255,0.05)',
             border: '2px solid rgba(255,255,255,0.1)',
             borderRadius: '15px',
             color: '#fff',
-            fontSize: '1rem',
+            fontSize: isMobile ? '0.95rem' : '1rem',
             outline: 'none',
             resize: 'vertical',
-            minHeight: '120px'
+            minHeight: isMobile ? '100px' : '120px',
+            touchAction: 'manipulation'
           }}
         />
       ) : (
@@ -655,13 +775,14 @@ function FormField({
           }}
           style={{
             width: '100%',
-            padding: '1.2rem',
+            padding: isMobile ? '1rem' : '1.2rem',
             background: 'rgba(255,255,255,0.05)',
             border: '2px solid rgba(255,255,255,0.1)',
             borderRadius: '15px',
             color: '#fff',
-            fontSize: '1rem',
-            outline: 'none'
+            fontSize: isMobile ? '0.95rem' : '1rem',
+            outline: 'none',
+            touchAction: 'manipulation'
           }}
         />
       )}
