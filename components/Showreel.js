@@ -24,7 +24,7 @@ export default function Showreel() {
       category: "Interviews",
       color: "#FF6B6B",
       gradient: "linear-gradient(135deg, #FF6B6B, #FF8E8E)",
-      duration: "45 min",
+      duration: "3 min",
       featured: true
     },
     {
@@ -41,14 +41,14 @@ export default function Showreel() {
     },
     {
       id: 3,
-      title: "Product Innovation",
-      description: "Cinematic showcase merging technology with storytelling excellence.",
+      title: "New Beginnings",
+      description: "Cinematic showcase new merginf journeys with storytelling excellence.",
       thumbnail: "https://img.youtube.com/vi/KEtG2RcmrM0/maxresdefault.jpg",
       videoId: "KEtG2RcmrM0",
       category: "Product",
       color: "#95E1D3",
       gradient: "linear-gradient(135deg, #95E1D3, #6DD5FA)",
-      duration: "3 min",
+      duration: "2 min",
       featured: true
     },
     {
@@ -57,10 +57,10 @@ export default function Showreel() {
       description: "Compelling narratives that inspire change and create meaningful connections.",
       thumbnail: "https://img.youtube.com/vi/lm8zA2RYg7Y/maxresdefault.jpg",
       videoId: "lm8zA2RYg7Y",
-      category: "Documentary",
+      category: "Impact",
       color: "#F38181",
       gradient: "linear-gradient(135deg, #F38181, #FCE38A)",
-      duration: "28 min",
+      duration: "3 min",
       featured: true
     },
     {
@@ -72,7 +72,7 @@ export default function Showreel() {
       category: "Education",
       color: "#FFD93D",
       gradient: "linear-gradient(135deg, #FFD93D, #6BCF7F)",
-      duration: "15 min",
+      duration: "4 min",
       featured: false
     },
     {
@@ -84,7 +84,7 @@ export default function Showreel() {
       category: "Events",
       color: "#AA96DA",
       gradient: "linear-gradient(135deg, #AA96DA, #FCBAD3)",
-      duration: "8 min",
+      duration: "3 min",
       featured: false
     }
   ]

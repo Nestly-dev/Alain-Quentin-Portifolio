@@ -44,7 +44,7 @@ export default function Hero() {
     }
   }, [])
 
-  const rotatingWords = ['Storyteller', 'Creator', 'Visionary']
+  const rotatingWords = ['Storyteller', 'Creator', 'Editor', 'Filmmaker']
 
   return (
     <section className="hero" id="home" ref={sectionRef}>

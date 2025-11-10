@@ -26,7 +26,7 @@ export default function Portfolio() {
   const projects = [
     {
       id: 1,
-      title: "Corporate Leadership Series",
+      title: "World Class Interviews",
       category: "interviews",
       videoId: "4RZ6bBRSIFo",
       thumbnail: "https://img.youtube.com/vi/4RZ6bBRSIFo/maxresdefault.jpg",
@@ -35,12 +35,12 @@ export default function Portfolio() {
       color: "#FF6B6B",
       gradient: "linear-gradient(135deg, #FF6B6B, #FF8E8E)",
       tags: ["Documentary", "Corporate", "Interview"],
-      duration: "45 min",
-      year: "2024"
+      duration: "3 min",
+      year: "2025"
     },
     {
       id: 2,
-      title: "Brand Evolution Campaign",
+      title: "Chronicles Commercial",
       category: "commercial",
       videoId: "jd1MplcMhQQ",
       thumbnail: "https://img.youtube.com/vi/jd1MplcMhQQ/maxresdefault.jpg",
@@ -54,7 +54,7 @@ export default function Portfolio() {
     },
     {
       id: 3,
-      title: "Product Innovation Film",
+      title: "Chronicles New Entrance",
       category: "commercial",
       videoId: "KEtG2RcmrM0",
       thumbnail: "https://img.youtube.com/vi/KEtG2RcmrM0/maxresdefault.jpg",
@@ -68,7 +68,7 @@ export default function Portfolio() {
     },
     {
       id: 4,
-      title: "Community Impact Documentary",
+      title: "Breaking New Barries",
       category: "impact stories",
       videoId: "lm8zA2RYg7Y",
       thumbnail: "https://img.youtube.com/vi/lm8zA2RYg7Y/maxresdefault.jpg",
@@ -77,8 +77,8 @@ export default function Portfolio() {
       color: "#F38181",
       gradient: "linear-gradient(135deg, #F38181, #FCE38A)",
       tags: ["Social Impact", "Documentary", "NGO"],
-      duration: "28 min",
-      year: "2023"
+      duration: "2 min",
+      year: "2024"
     },
     {
       id: 5,
