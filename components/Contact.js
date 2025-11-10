@@ -1,9 +1,10 @@
-// components/Contact.js - ENHANCED VERSION (FIXED)
+// components/Contact.js - WITH EMAILJS INTEGRATION (USING ENV VARIABLES)
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import emailjs from '@emailjs/browser'
 
 export default function Contact() {
   const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true })
@@ -19,6 +20,15 @@ export default function Contact() {
   const [focusedField, setFocusedField] = useState(null)
   const [formStatus, setFormStatus] = useState(null)
 
+  // Initialize EmailJS on component mount
+  useEffect(() => {
+    // Initialize with public key from environment variable
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+    if (publicKey) {
+      emailjs.init(publicKey)
+    }
+  }, [])
+
   const projectTypes = [
     { icon: "🎬", label: "Commercial", value: "commercial" },
     { icon: "📺", label: "Documentary", value: "documentary" },
@@ -31,8 +41,30 @@ export default function Contact() {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Prepare the template parameters
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        company: formData.company || 'Not provided',
+        budget: formData.budget || 'Not specified',
+        project_type: formData.projectType || 'Not specified',
+        message: formData.message
+      }
+
+      // Get EmailJS credentials from environment variables
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+
+      // Send email using EmailJS
+      const result = await emailjs.send(
+        serviceId,
+        templateId,
+        templateParams
+      )
+
+      console.log('Email sent successfully!', result.status, result.text)
+      
       setIsSubmitting(false)
       setFormStatus('success')
       
@@ -48,7 +80,15 @@ export default function Contact() {
         })
         setFormStatus(null)
       }, 3000)
-    }, 2000)
+      
+    } catch (error) {
+      console.error('Email send failed:', error)
+      setIsSubmitting(false)
+      setFormStatus('error')
+      
+      // Show error message to user
+      alert('Failed to send message. Please try again or email directly at ialainquentin@gmail.com')
+    }
   }
 
   const handleChange = (e) => {
@@ -187,6 +227,8 @@ export default function Contact() {
                   <motion.a
                     key={social.name}
                     href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="social-link"
                     initial={{ opacity: 0, scale: 0 }}
                     animate={inView ? { opacity: 1, scale: 1 } : {}}
@@ -475,6 +517,24 @@ export default function Contact() {
                   Thanks for reaching out! I'll get back to you within 24 hours.
                 </motion.div>
               )}
+              {formStatus === 'error' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: 'auto' }}
+                  exit={{ opacity: 0, y: -20, height: 0 }}
+                  style={{
+                    padding: '1rem',
+                    background: 'rgba(239, 68, 68, 0.1)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    borderRadius: '15px',
+                    color: '#EF4444',
+                    textAlign: 'center',
+                    marginTop: '1rem'
+                  }}
+                >
+                  Something went wrong. Please try again or email me directly.
+                </motion.div>
+              )}
             </AnimatePresence>
           </motion.form>
         </div>
@@ -546,7 +606,9 @@ function FormField({
           }}
         >
           {options.map(opt => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
+            <option key={opt.value} value={opt.value} style={{ background: '#1a1a1a', color: '#fff' }}>
+              {opt.label}
+            </option>
           ))}
         </motion.select>
       ) : type === 'textarea' ? (
