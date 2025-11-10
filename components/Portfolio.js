@@ -106,7 +106,7 @@ export default function Portfolio() {
       gradient: "linear-gradient(135deg, #FCBAD3, #FFFFD2)",
       tags: ["Podcast", "Insights", "Leadership"],
       duration: "1 hr",
-      year: "2024"
+      year: "2025"
     },
     {
       id: 7,
@@ -119,12 +119,12 @@ export default function Portfolio() {
       color: "#FFD93D",
       gradient: "linear-gradient(135deg, #FFD93D, #6BCF7F)",
       tags: ["Education", "Tutorial", "Skills"],
-      duration: "15 min",
+      duration: "4 min",
       year: "2024"
     },
     {
       id: 8,
-      title: "Human Stories Documentary",
+      title: "Cinematic Storytelling",
       category: "storytelling",
       videoId: "wzgox6SxOuQ",
       thumbnail: "https://img.youtube.com/vi/wzgox6SxOuQ/maxresdefault.jpg",
@@ -133,7 +133,7 @@ export default function Portfolio() {
       color: "#A8D8EA",
       gradient: "linear-gradient(135deg, #A8D8EA, #C2E9FB)",
       tags: ["Narrative", "Cinema", "Long-form"],
-      duration: "1.5 hrs",
+      duration: "5-10 min",
       year: "2023"
     }
   ]

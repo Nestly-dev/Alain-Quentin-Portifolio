@@ -59,10 +59,9 @@ export default function Contact() {
   }
 
   const socialLinks = [
-    { name: 'Instagram', icon: '📷', url: '#', color: '#E4405F' },
-    { name: 'Vimeo', icon: '🎥', url: '#', color: '#1AB7EA' },
-    { name: 'LinkedIn', icon: '💼', url: '#', color: '#0077B5' },
-    { name: 'Twitter', icon: '🐦', url: '#', color: '#1DA1F2' }
+    { name: 'Instagram', icon: '📷', url: 'https://www.instagram.com/gentil_quentin/', color: '#E4405F' },
+    { name: 'YouTube', icon: '🎥', url: 'https://www.youtube.com/@gentilquentin', color: '#1AB7EA' },
+    { name: 'LinkedIn', icon: '💼', url: 'https://www.linkedin.com/in/alain-quentin-rurangirwa-ineza-b057002b7/', color: '#0077B5' }
   ]
 
   return (
@@ -125,9 +124,9 @@ export default function Contact() {
             
             <div className="contact-details">
               {[
-                { icon: "📧", text: "hello@alainquentin.com", label: "Email" },
-                { icon: "📱", text: "+1 (555) 123-4567", label: "Phone" },
-                { icon: "📍", text: "Los Angeles, CA", label: "Location" }
+                { icon: "📧", text: "ialainquentin@gmail.com", label: "Email" },
+                { icon: "📱", text: "+250 783520 488", label: "Phone" },
+                { icon: "📍", text: "Rwanda, Kigali", label: "Location" }
               ].map((item, index) => (
                 <motion.div
                   key={item.label}

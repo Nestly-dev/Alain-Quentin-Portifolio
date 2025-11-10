@@ -26,7 +26,7 @@ export default function Process() {
       details: "Building the foundation by selecting the best takes, establishing rhythm, and creating the initial story structure that brings your vision to life.",
       color: "#f093fb",
       gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-      timeline: "2-4 days"
+      timeline: "1-2 days"
     },
     {
       icon: "🎨",
@@ -35,7 +35,7 @@ export default function Process() {
       details: "Refining every frame with perfected timing, seamless transitions, and sculpting emotional moments that resonate with audiences.",
       color: "#4facfe",
       gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-      timeline: "3-5 days"
+      timeline: "1-2 days"
     },
     {
       icon: "🎵",
@@ -44,7 +44,7 @@ export default function Process() {
       details: "Sound completes the vision with dialogue mixing, effect design, and music integration that amplifies every emotion.",
       color: "#43e97b",
       gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
-      timeline: "2-3 days"
+      timeline: "1 day"
     },
     {
       icon: "🌈",
@@ -53,7 +53,7 @@ export default function Process() {
       details: "Painting with light through color correction for consistency and creative grading to establish mood and atmosphere.",
       color: "#fa709a",
       gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-      timeline: "2-3 days"
+      timeline: "1 day"
     },
     {
       icon: "📤",

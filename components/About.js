@@ -8,9 +8,9 @@ export default function About() {
   const statsRef = useRef([])
 
   const stats = [
-    { number: 150, label: "Projects Completed", suffix: "+" },
+    { number: 250, label: "Projects Completed", suffix: "+" },
     { number: 50, label: "Happy Clients", suffix: "+" },
-    { number: 8, label: "Years Experience", suffix: "+" }
+    { number: 3, label: "Years Experience", suffix: "+" }
   ]
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function About() {
         animate={inView ? "visible" : "hidden"}
       >
         <motion.div className="about-image" variants={itemVariants}>
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop" alt="Alain Quentin" />
+          <img src="https://rentals-app-bucket.s3.eu-north-1.amazonaws.com/DSC00016.jpeg" alt="Alain Quentin" />
           <motion.div
             className="image-overlay"
             initial={{ opacity: 0 }}
@@ -100,7 +100,7 @@ export default function About() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            With over 8 years of experience in video editing, I've had the privilege of working with some of the world's most recognized brands and talented filmmakers. My passion lies in transforming raw footage into compelling narratives that resonate with audiences.
+            With over 4 years of experience in video editing, I've had the privilege of working with some of the world's most recognized brands and talented filmmakers. My passion lies in transforming raw footage into compelling narratives that resonate with audiences.
           </motion.p>
           
           <motion.p
@@ -119,7 +119,7 @@ export default function About() {
           >
             <h4>Expertise</h4>
             <div className="skills-grid">
-              {['Adobe Premiere Pro', 'DaVinci Resolve', 'After Effects', 'Avid Media Composer'].map((skill, index) => (
+              {['Adobe Premiere Pro', 'DaVinci Resolve', 'After Effects','Blender',"Adobe Animate", 'Photoshop', 'Lightroom', 'Media Encoder'].map((skill, index) => (
                 <motion.span
                   key={skill}
                   className="skill-tag"
